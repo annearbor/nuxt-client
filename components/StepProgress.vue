@@ -35,20 +35,21 @@ export default {
 <style scoped>
 $z-index-1: 1;
 
-* {
-	padding: 0;
-	margin: 0;
-}
-
 .container {
 	position: relative;
 	z-index: $z-index-1;
 	width: 100%;
 }
+
+ul.progressbar {
+	padding-inline-start: 0;
+}
+
 .progressbar {
 	list-style: none;
 	counter-reset: step;
 }
+
 .progressbar li {
 	position: relative;
 	float: left;
