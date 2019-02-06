@@ -24,7 +24,10 @@ export default {
 		CardFooter,
 	},
 	props: {
-		msg: String,
+		msg: {
+			type: String,
+			default: ''
+		},
 		course: {
 			type: Object,
 			default: () => ({

@@ -20,8 +20,14 @@ export default {
 	name: "StepProgress",
 	components: {},
 	props: {
-		steps: Array,
-		currentStep: Number,
+		steps: {
+			type: Array,
+			default: () => []
+		},
+		currentStep: {
+			type: Number,
+			default: 0
+		},
 	},
 	computed: {
 		stepWidth: function() {

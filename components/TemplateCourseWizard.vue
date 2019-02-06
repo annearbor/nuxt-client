@@ -95,11 +95,26 @@ export default {
 	name: "TemplateCourseWizard",
 	components: { StepProgress, MultiSelect },
 	props: {
-		currentStep: Number,
-		steps: Array,
-		step: Number,
-		course: Object,
-		user: Object,
+		currentStep: {
+			type: Number,
+			default: 0
+		},
+		steps: {
+			type: Array,
+			default: () => []
+		},
+		step: {
+			type: Number,
+			default: 0
+		},
+		course: {
+			type: Object,
+			default: () => {}		
+		},
+		user: {
+			type: Object,
+			default: () => {}		
+		},
 	},
 	data() {
 		return {
