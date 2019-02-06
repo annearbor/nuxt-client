@@ -1,31 +1,5 @@
 <template>
 	<div v-if="course">
-		<section class="section">
-			<h1>Kurs erstellen</h1>
-			<BaseInput
-				v-model="course.name"
-				label="Name"
-				type="text"
-				placeholder="Dream Team"
-				maxlength="30"
-			></BaseInput>
-			<BaseInput
-				v-model="course.description"
-				label="Beschreibung"
-				type="textarea"
-				placeholder="Everything you have to know"
-				maxlength="255"
-			></BaseInput>
-			<BaseInput
-				v-model="course.name"
-				label="Name"
-				type="text"
-				placeholder="Dream Team"
-				maxlength="30"
-			></BaseInput>
-			<button class="button is-primary" @click="create()">Speichern</button>
-		</section>
-
 		<TemplateCourseWizard
 			:steps="stepList"
 			:current-step="0"
@@ -33,13 +7,14 @@
 			:user="user"
 			@course-creation-submit="create()"
 		/>
-
 		{{ this.user._id }}
+		{{ this.users }}
 	</div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import TemplateCourseWizard from "@components/TemplateCourseWizard";
 
 export default {
@@ -62,9 +37,17 @@ export default {
 		...mapState("auth", {
 			user: "user",
 		}),
+		...mapGetters("users", {
+			users: "list",
+		}),
 	},
-	created() {
+	created(ctx) {
 		this.course.teacherIds.push(this.user._id);
+		const query = {};
+		query["_all[$match]"] = "Hugo";
+		this.$store.dispatch("users/find", {
+			query: query,
+		});
 	},
 	methods: {
 		async create(id) {

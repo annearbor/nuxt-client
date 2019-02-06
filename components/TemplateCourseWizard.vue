@@ -12,6 +12,7 @@
 				<h3>Step 1</h3>
 				<BaseInput
 					v-model="course.name"
+					name="name"
 					label="Kursname"
 					type="text"
 					placeholder="z.B. 10a"
@@ -20,12 +21,21 @@
 
 				<BaseInput
 					v-model="course.description"
+					name="description"
 					label="Kursbeschreibung"
 					type="textarea"
 					placeholder=""
 					maxlength="255"
 				></BaseInput>
 
+				<h6>Unterrichtender Lehrer</h6>
+				<MultiSelect
+					v-model="course.teacherIds"
+					:options="teachers"
+					:multiple="true"
+				></MultiSelect>
+
+				<h6>Vertretungs-Lehrer</h6>
 				<MultiSelect
 					v-model="course.teacherIds"
 					:options="teachers"
