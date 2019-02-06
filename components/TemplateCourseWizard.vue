@@ -10,47 +10,33 @@
 
 			<div v-show="currentStep == 0">
 				<h3>Step 1</h3>
-				<div class="form-group">
-					<label for="coursename">Kursname</label>
-					<input
-						name="coursename"
-						class="form-control"
-						aria-describedby="coursename"
-						placeholder=""
-					/>
-				</div>
-				<div class="form-group">
-					<label for="teacher">Unterrichtender Lehrer</label>
-					<input
-						name="teacher"
-						class="form-control"
-						aria-describedby="teacher"
-						placeholder=""
-					/>
-				</div>
-				<div class="form-group">
-					<label for="teacher">Vertretungslehrer</label>
-					<input
-						name="replacementteacher"
-						class="form-control"
-						aria-describedby="replacementteacher"
-						placeholder=""
-					/>
-				</div>
+				<BaseInput
+					v-model="course.name"
+					label="Kursname"
+					type="text"
+					placeholder="z.B. 10a"
+					maxlength="30"
+				></BaseInput>
+
+				<BaseInput
+					v-model="course.description"
+					label="Kursbeschreibung"
+					type="textarea"
+					placeholder=""
+					maxlength="255"
+				></BaseInput>
+
+				<MultiSelect
+					v-model="course.teacherIds"
+					:options="teachers"
+					:multiple="true"
+				></MultiSelect>
 			</div>
 
 			<div v-show="currentStep == 1">
 				<h3>Step 2</h3>
-				<div class="form-group">
-					<label for="select">Kursmitglieder auswählen</label>
-					<select class="form-control" name="select">
-						<option>1a</option>
-						<option>2a</option>
-						<option>3c</option>
-						<option>4a</option>
-						<option>5b</option>
-					</select>
-				</div>
+
+				{{ course.teacherIds }}
 			</div>
 
 			<div v-show="currentStep == 2">
@@ -58,27 +44,32 @@
 			</div>
 
 			<div class="step-wrapper">
-				<button
+				<BaseButton
 					type="button"
 					class="btn btn-primary"
 					:disabled="firststep"
 					@click="lastStep"
 				>
 					Zurück
-				</button>
-				<button
+				</BaseButton>
+				<BaseButton
+					v-if="!laststep"
 					type="button"
 					class="btn btn-primary"
 					:disabled="laststep"
 					@click="nextStep"
 				>
 					Weiter
-				</button>
-				<button v-if="laststep" type="submit" class="btn btn-primary">
+				</BaseButton>
+				<BaseButton
+					v-if="laststep"
+					type="submit"
+					class="btn btn-primary"
+					@click="$emit('course-creation-submit')"
+				>
 					Kurs anlegen und weiter
-				</button>
+				</BaseButton>
 			</div>
-			{{ firststep }}, {{ laststep }}
 		</div>
 	</div>
 </template>
@@ -88,14 +79,22 @@ import "../styles/base.scss";
 import StepProgress from "./StepProgress.vue";
 import BaseInput from "./ui/BaseInput";
 import BaseButton from "./ui/BaseButton";
+import MultiSelect from "vue-multiselect";
 
 export default {
 	name: "TemplateCourseWizard",
-	components: { StepProgress },
+	components: { StepProgress, MultiSelect },
 	props: {
 		currentStep: Number,
 		steps: Array,
 		step: Number,
+		course: Object,
+		user: Object,
+	},
+	data() {
+		return {
+			teachers: ["Frau Holle"],
+		};
 	},
 	computed: {
 		firststep() {
@@ -105,6 +104,12 @@ export default {
 		laststep() {
 			return this.currentStep == this.steps.length - 1;
 		},
+		fullname() {
+			return this.user.firstName + " " + this.user.lastName;
+		},
+	},
+	created() {
+		this.teachers.push(this.user._id);
 	},
 	methods: {
 		nextStep() {
@@ -118,6 +123,8 @@ export default {
 };
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .steps {
@@ -127,6 +134,7 @@ export default {
 }
 
 .step-wrapper {
-	text-align: right;
+	display: flex;
+	justify-content: space-between;
 }
 </style>

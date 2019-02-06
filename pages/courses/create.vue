@@ -4,7 +4,6 @@
 			<h1>Kurs erstellen</h1>
 			<BaseInput
 				v-model="course.name"
-				:name="course.name"
 				label="Name"
 				type="text"
 				placeholder="Dream Team"
@@ -12,18 +11,30 @@
 			></BaseInput>
 			<BaseInput
 				v-model="course.description"
-				:name="course.description"
 				label="Beschreibung"
 				type="textarea"
 				placeholder="Everything you have to know"
 				maxlength="255"
 			></BaseInput>
+			<BaseInput
+				v-model="course.name"
+				label="Name"
+				type="text"
+				placeholder="Dream Team"
+				maxlength="30"
+			></BaseInput>
 			<button class="button is-primary" @click="create()">Speichern</button>
-			<h1>{{ course.name }}</h1>
-			<p>{{ course.description }}</p>
 		</section>
 
-		<TemplateCourseWizard :steps="stepList" :current-step="0" />
+		<TemplateCourseWizard
+			:steps="stepList"
+			:current-step="0"
+			:course="course"
+			:user="user"
+			@course-creation-submit="create()"
+		/>
+
+		{{ this.user._id }}
 	</div>
 </template>
 
@@ -35,21 +46,25 @@ export default {
 	components: { TemplateCourseWizard },
 	data() {
 		return {
-			course: {
-				name: "",
-				description: "",
-			},
 			stepList: [
 				{ name: "Kurs anlegen" },
 				{ name: "Kurs-Mitglieder" },
 				{ name: "Abschließen" },
 			],
+			course: {
+				name: "",
+				description: "",
+				teacherIds: [],
+			},
 		};
 	},
 	computed: {
 		...mapState("auth", {
 			user: "user",
 		}),
+	},
+	created() {
+		this.course.teacherIds.push(this.user._id);
 	},
 	methods: {
 		async create(id) {
@@ -58,20 +73,11 @@ export default {
 					schoolId: this.user.schoolId,
 					name: this.course.name,
 					description: this.course.description,
-				});
-
-				this.$toast.open({
-					message: "Kurs erstellt",
-					type: "is-success",
+					teacherIds: [this.user._id],
 				});
 
 				this.$router.push({ name: "courses" });
-			} catch (e) {
-				this.$toast.open({
-					message: "Fehler beim Erstellen des Kurses",
-					type: "is-danger",
-				});
-			}
+			} catch (e) {}
 		},
 	},
 };
