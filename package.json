@@ -19,7 +19,8 @@
 		"lint:all:prettier": "yarn lint:prettier \"**/*.{js,json,css,scss,vue,html,md}\"",
 		"lint": "run-s lint:all:*",
 		"storybook": "start-storybook -p 6006",
-		"build-storybook": "build-storybook"
+		"build-storybook": "build-storybook",
+		"new": "hygen new"
 	},
 	"gitHooks": {
 		"pre-commit": "cross-env PRE_COMMIT=true lint-staged"
@@ -74,6 +75,7 @@
 		"eslint-loader": "^2.0.0",
 		"eslint-plugin-prettier": "^3.0.1",
 		"eslint-plugin-vue": "^5.1.0",
+		"hygen": "^2.1.1",
 		"imagemin-lint-staged": "^0.4.0",
 		"lint-staged": "^8.1.1",
 		"markdownlint-cli": "^0.13.0",
