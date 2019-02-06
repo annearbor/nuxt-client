@@ -7,8 +7,8 @@
 			:user="user"
 			@course-creation-submit="create()"
 		/>
-		{{ this.user._id }}
-		{{ this.users }}
+		{{ user._id }}
+		{{ users }}
 	</div>
 </template>
 
@@ -19,6 +19,21 @@ import TemplateCourseWizard from "@components/TemplateCourseWizard";
 
 export default {
 	components: { TemplateCourseWizard },
+	async asyncData ({ store })  {
+		try {
+			const roles = await store.dispatch("roles/find");
+			const teacherRole = roles.data.find(r => r.name === 'teacher')
+			const query = {
+				roles: [teacherRole._id]
+			};
+			await store.dispatch("users/find", {
+				query
+			})
+		} catch (err) { 
+			console.log('err')
+			console.log(err)
+		}
+	},
 	data() {
 		return {
 			stepList: [
@@ -43,11 +58,6 @@ export default {
 	},
 	created(ctx) {
 		this.course.teacherIds.push(this.user._id);
-		const query = {};
-		query["_all[$match]"] = "Hugo";
-		this.$store.dispatch("users/find", {
-			query: query,
-		});
 	},
 	methods: {
 		async create(id) {
