@@ -39,7 +39,11 @@ export default {
 				name: "",
 				description: "",
 			},
-			stepList: [{ name: "eins" }, { name: "zwei" }, { name: "drei" }],
+			stepList: [
+				{ name: "Kurs anlegen" },
+				{ name: "Kurs-Mitglieder" },
+				{ name: "Abschließen" },
+			],
 		};
 	},
 	computed: {
