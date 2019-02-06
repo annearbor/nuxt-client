@@ -37,7 +37,8 @@ export default {
 
 <style scoped>
 .center {
-	text-align: center;
+	display: flex;
+	justify-content: center;
 }
 
 .title {

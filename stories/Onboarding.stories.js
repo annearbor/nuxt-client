@@ -26,29 +26,6 @@ storiesOf("Onboarding", module).add("Landing CTA", () => ({
 }));
 
 storiesOf("Wizard", module)
-	.add("Wizard Template 1", () => ({
-		components: { TemplateCourseWizard },
-		template: '<TemplateCourseWizard :steps="progressSteps" :currentStep="0"/>',
-		data: () => ({
-			progressSteps: steps,
-		}),
-	}))
-	.add("Wizard Template 2", () => ({
-		components: { TemplateCourseWizard },
-		template: '<TemplateCourseWizard :steps="progressSteps" :currentStep="1"/>',
-		data: () => ({
-			progressSteps: steps,
-		}),
-	}))
-	.add("Wizard Template 3", () => ({
-		components: { TemplateCourseWizard },
-		template: '<TemplateCourseWizard :steps="progressSteps" :currentStep="2"/>',
-		data: () => ({
-			progressSteps: steps,
-		}),
-	}));
-
-storiesOf("Wizard", module)
 	.add("StepProgress Step 1", () => ({
 		components: { StepProgress },
 		template: '<StepProgress :steps="progressSteps" :currentStep="0"/> ',
