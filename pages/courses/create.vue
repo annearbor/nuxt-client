@@ -7,8 +7,8 @@
 			:user="user"
 			@course-creation-submit="create()"
 		/>
-		{{ this.user._id }}
-		{{ this.users }}
+		{{ user._id }}
+		{{ users }}
 	</div>
 </template>
 
@@ -44,7 +44,6 @@ export default {
 	created(ctx) {
 		this.course.teacherIds.push(this.user._id);
 		const query = {};
-		query["_all[$match]"] = "Hugo";
 		this.$store.dispatch("users/find", {
 			query: query,
 		});
