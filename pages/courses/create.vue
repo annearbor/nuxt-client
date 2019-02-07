@@ -74,7 +74,7 @@ export default {
 				name: "",
 				description: "",
 				startDate: "",
-				endDate: "",
+				untilDate: "",
 				teachers: [],
 				substitutions: [],
 				classes: [],
@@ -97,6 +97,8 @@ export default {
 					schoolId: this.user.schoolId,
 					name: this.course.name,
 					description: this.course.description,
+					startDate: this.course.startDate,
+					untilDate: this.course.untilDate,
 					teacherIds: this.course.teachers.map((teacher) => {
 						return teacher["_id"];
 					}),

@@ -13,6 +13,12 @@
 				@input="$emit('update', $event.target.value)"
 				v-on="$listeners"
 			/>
+			<FlatPickr
+				v-if="type == 'date'"
+				v-model="value"
+				:config="config"
+				class="input"
+			/>
 		</label>
 		<small v-if="hint || $slots.hint" class="hint">
 			<template v-if="hint">{{ hint }}</template>
@@ -22,9 +28,16 @@
 </template>
 
 <script>
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import { German } from "flatpickr/dist/l10n/de.js";
+
 export default {
 	// currently, this only supports text input
 	name: "BaseInput",
+	components: {
+		flatPickr,
+	},
 	inheritAttrs: false,
 	model: {
 		event: "update",
@@ -57,6 +70,17 @@ export default {
 			type: String,
 			default: "",
 		},
+	},
+	data() {
+		return {
+			// Get more form https://chmln.github.io/flatpickr/options/
+			config: {
+				altFormat: "M	j, Y",
+				altInput: false,
+				dateFormat: "d.m.Y",
+				locale: German,
+			},
+		};
 	},
 };
 </script>

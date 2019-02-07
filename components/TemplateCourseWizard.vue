@@ -46,23 +46,13 @@
 					track-by="_id"
 				></MultiSelect>
 
-				<BaseInput
-					v-model="course.startDate"
-					name="startDate"
-					label="Startdatum"
-					type="text"
-					placeholder="2018-09-01 00:00:00.000"
-					maxlength="30"
-				></BaseInput>
+				<h6>Start und Enddatum</h6>
 
-				<BaseInput
-					v-model="course.endDate"
-					name="endDate"
-					label="Enddatum"
-					type="text"
-					placeholder="2019-08-31 00:00:00.000"
-					maxlength="30"
-				></BaseInput>
+				<div class="date">
+					<FlatPickr v-model="course.startDate" :config="config" />
+
+					<FlatPickr v-model="course.untilDate" :config="config" />
+				</div>
 
 				selected teachers:
 				{{
@@ -154,9 +144,13 @@ import BaseInput from "./ui/BaseInput";
 import BaseButton from "./ui/BaseButton";
 import MultiSelect from "vue-multiselect";
 
+import flatPickr from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import { German } from "flatpickr/dist/l10n/de.js";
+
 export default {
 	name: "TemplateCourseWizard",
-	components: { StepProgress, MultiSelect },
+	components: { StepProgress, MultiSelect, flatPickr },
 	props: {
 		currentStep: {
 			type: Number,
@@ -190,6 +184,17 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+	},
+	data() {
+		return {
+			// Get more form https://chmln.github.io/flatpickr/options/
+			config: {
+				altFormat: "d.m.Y",
+				altInput: true,
+				dateFormat: "Y-m-d",
+				locale: German,
+			},
+		};
 	},
 	computed: {
 		firststep() {
@@ -230,5 +235,9 @@ export default {
 .step-wrapper {
 	display: flex;
 	justify-content: space-between;
+}
+
+.date {
+	display: flex;
 }
 </style>
