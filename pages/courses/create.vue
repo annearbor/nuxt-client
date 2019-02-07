@@ -9,6 +9,15 @@
 			:classes="classes"
 			@course-creation-submit="create()"
 		/>
+		{{ user._id }}
+		<h2>Teachers</h2>
+		{{ teachers }}
+
+		<h2>Students</h2>
+		{{ students }}
+
+		<h2>Klassen</h2>
+		{{ classes }}
 	</div>
 </template>
 
@@ -21,16 +30,36 @@ export default {
 	components: { TemplateCourseWizard },
 	async asyncData({ store }) {
 		try {
-			const roles = await store.dispatch("roles/find");
-			const teacherRole = roles.data.find((r) => r.name === "teacher");
+			const teacherRole = (await store.dispatch("roles/find", {
+				query: {
+					name: "teacher",
+				},
+			})).data[0];
+
+			const studentsRole = (await store.dispatch("roles/find", {
+				query: {
+					name: "student",
+				},
+			})).data[0];
+
 			const query = {
 				roles: [teacherRole._id],
 			};
-			await store.dispatch("users/find", {
-				query,
-			});
+
+			const teachers = (await store.dispatch("users/find", { query })).data;
+
+			const query2 = {
+				roles: [studentsRole._id],
+			};
+			const students = (await store.dispatch("users/find", { query: query2 }))
+				.data;
 
 			await store.dispatch("classes/find");
+
+			return {
+				teachers,
+				students,
+			};
 		} catch (err) {}
 	},
 	data() {
@@ -44,6 +73,7 @@ export default {
 				name: "",
 				description: "",
 				teachers: [],
+				teacherIds: [],
 				substitutions: [],
 				classes: [],
 			},
@@ -53,12 +83,12 @@ export default {
 		...mapState("auth", {
 			user: "user",
 		}),
-		...mapGetters("users", {
-			teachers: "list",
-		}),
 		...mapGetters("classes", {
 			classes: "list",
 		}),
+	},
+	created(ctx) {
+		this.course.teacherIds.push(this.user._id);
 	},
 	methods: {
 		async create(id) {
