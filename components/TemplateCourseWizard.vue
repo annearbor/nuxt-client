@@ -30,23 +30,47 @@
 
 				<h6>Unterrichtender Lehrer</h6>
 				<MultiSelect
-					v-model="course.teacherIds"
+					v-model="course.teachers"
 					:options="teachers"
+					label="lastName"
+					track-by="_id"
 					:multiple="true"
 				></MultiSelect>
 
 				<h6>Vertretungs-Lehrer</h6>
 				<MultiSelect
-					v-model="course.teacherIds"
+					v-model="course.substitutions"
 					:options="teachers"
 					:multiple="true"
+					label="lastName"
+					track-by="_id"
 				></MultiSelect>
+
+				<h6>Klasse auswählen</h6>
+				<MultiSelect
+					v-model="course.classes"
+					:options="classes"
+					:multiple="true"
+					label="displayName"
+					track-by="_id"
+				></MultiSelect>
+
+				selected teachers:
+				{{
+					course.teachers.map((item) => {
+						return item["_id"];
+					})
+				}}
+				selected substitutions:
+				{{
+					course.substitutions.map((item) => {
+						return item["_id"];
+					})
+				}}
 			</div>
 
 			<div v-show="currentStep == 1">
 				<h3>Step 2</h3>
-
-				{{ course.teacherIds }}
 			</div>
 
 			<div v-show="currentStep == 2">
@@ -97,35 +121,37 @@ export default {
 	props: {
 		currentStep: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		steps: {
 			type: Array,
-			default: () => []
+			default: () => [],
 		},
 		step: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		course: {
 			type: Object,
-			default: () => {}		
+			default: () => {},
 		},
 		user: {
 			type: Object,
-			default: () => {}		
+			default: () => {},
 		},
-	},
-	data() {
-		return {
-			teachers: ["Frau Holle"],
-		};
+		teachers: {
+			type: Array,
+			default: () => [],
+		},
+		classes: {
+			type: Array,
+			default: () => [],
+		},
 	},
 	computed: {
 		firststep() {
 			return this.currentStep == 0;
 		},
-
 		laststep() {
 			return this.currentStep == this.steps.length - 1;
 		},
@@ -134,7 +160,7 @@ export default {
 		},
 	},
 	created() {
-		this.teachers.push(this.user._id);
+		this.course.teachers.push(this.user);
 	},
 	methods: {
 		nextStep() {
