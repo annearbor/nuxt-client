@@ -8,109 +8,96 @@
 		<div class="steps">
 			<StepProgress :steps="steps" :current-step="currentStep" />
 
-			<div v-show="currentStep == 0">
-				<h3>Step 1</h3>
-				<BaseInput
-					v-model="course.name"
-					name="name"
-					label="Kursname"
-					type="text"
-					placeholder="z.B. 10a"
-					maxlength="30"
-				></BaseInput>
+			<div class="content-wrapper">
+				<div v-show="currentStep == 0">
+					<BaseInput
+						v-model="course.name"
+						name="name"
+						label="Kursname"
+						type="text"
+						placeholder="z.B. 10a"
+						maxlength="30"
+					></BaseInput>
 
-				<BaseInput
-					v-model="course.description"
-					name="description"
-					label="Kursbeschreibung"
-					type="textarea"
-					placeholder=""
-					maxlength="255"
-				></BaseInput>
+					<BaseInput
+						v-model="course.description"
+						name="description"
+						label="Kursbeschreibung"
+						type="textarea"
+						placeholder=""
+						maxlength="255"
+					></BaseInput>
 
-				<h6>Unterrichtender Lehrer</h6>
-				<MultiSelect
-					v-model="course.teachers"
-					:options="teachers"
-					label="lastName"
-					track-by="_id"
-					:multiple="true"
-				></MultiSelect>
+					<h6>Unterrichtender Lehrer</h6>
+					<MultiSelect
+						v-model="course.teachers"
+						:options="teachers"
+						label="lastName"
+						track-by="_id"
+						:multiple="true"
+					></MultiSelect>
 
-				<h6>Vertretungs-Lehrer</h6>
-				<MultiSelect
-					v-model="course.substitutions"
-					:options="teachers"
-					:multiple="true"
-					label="lastName"
-					track-by="_id"
-				></MultiSelect>
+					<h6>Vertretungs-Lehrer</h6>
+					<MultiSelect
+						v-model="course.substitutions"
+						:options="teachers"
+						:multiple="true"
+						label="lastName"
+						track-by="_id"
+					></MultiSelect>
 
-				<h6>Start und Enddatum</h6>
+					<h6>Start und Enddatum</h6>
 
-				<div class="date">
-					<FlatPickr v-model="course.startDate" :config="config" />
+					<div class="date">
+						<FlatPickr v-model="course.startDate" :config="config" />
 
-					<FlatPickr v-model="course.untilDate" :config="config" />
+						<FlatPickr v-model="course.untilDate" :config="config" />
+					</div>
 				</div>
 
-				selected teachers:
-				{{
-					course.teachers.map((item) => {
-						return item["_id"];
-					})
-				}}
-				selected substitutions:
-				{{
-					course.substitutions.map((item) => {
-						return item["_id"];
-					})
-				}}
+				<div v-show="currentStep == 1">
+					<h3>Step 2</h3>
+
+					<h6>Klasse auswählen</h6>
+					<MultiSelect
+						v-model="course.classes"
+						:options="classes"
+						:multiple="true"
+						label="displayName"
+						track-by="_id"
+					></MultiSelect>
+
+					<h6>Studenten auswählen</h6>
+					<MultiSelect
+						v-model="course.students"
+						:options="students"
+						:multiple="true"
+						label="displayName"
+						track-by="_id"
+					></MultiSelect>
+
+					{{
+						course.classes.map((c) => {
+							return c["_id"];
+						})
+					}}
+
+					{{
+						course.students.map((c) => {
+							return c["_id"];
+						})
+					}}
+				</div>
+
+				<div v-show="currentStep == 2">
+					<h3>Geschafft!</h3>
+				</div>
 			</div>
-
-			<div v-show="currentStep == 1">
-				<h3>Step 2</h3>
-
-				<h6>Klasse auswählen</h6>
-				<MultiSelect
-					v-model="course.classes"
-					:options="classes"
-					:multiple="true"
-					label="displayName"
-					track-by="_id"
-				></MultiSelect>
-
-				<h6>Studenten auswählen</h6>
-				<MultiSelect
-					v-model="course.students"
-					:options="students"
-					:multiple="true"
-					label="displayName"
-					track-by="_id"
-				></MultiSelect>
-
-				{{
-					course.classes.map((c) => {
-						return c["_id"];
-					})
-				}}
-
-				{{
-					course.students.map((c) => {
-						return c["_id"];
-					})
-				}}
-			</div>
-
-			<div v-show="currentStep == 2">
-				<h3>Geschafft!</h3>
-			</div>
-
 			<div class="step-wrapper">
 				<BaseButton
+					v-if="!firststep"
 					type="button"
 					class="btn btn-primary"
-					:disabled="firststep"
 					@click="lastStep"
 				>
 					Zurück
@@ -119,7 +106,6 @@
 					v-if="!laststep"
 					type="button"
 					class="btn btn-primary"
-					:disabled="laststep"
 					@click="nextStep"
 				>
 					Weiter
@@ -234,7 +220,7 @@ export default {
 
 .step-wrapper {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 }
 
 .date {

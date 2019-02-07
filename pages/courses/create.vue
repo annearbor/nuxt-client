@@ -10,15 +10,6 @@
 			:students="students"
 			@course-creation-submit="create()"
 		/>
-		{{ user._id }}
-		<h2>Teachers</h2>
-		{{ teachers }}
-
-		<h2>Students</h2>
-		{{ students }}
-
-		<h2>Klassen</h2>
-		{{ classes }}
 	</div>
 </template>
 
