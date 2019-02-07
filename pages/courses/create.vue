@@ -8,7 +8,11 @@
 			@course-creation-submit="create()"
 		/>
 		{{ user._id }}
-		{{ users }}
+		<h2>Teachers</h2>
+		{{ teachers }}
+
+		<h2>Students</h2>
+		{{ students }}
 	</div>
 </template>
 
@@ -21,14 +25,32 @@ export default {
 	components: { TemplateCourseWizard },
 	async asyncData ({ store })  {
 		try {
-			const roles = await store.dispatch("roles/find");
-			const teacherRole = roles.data.find(r => r.name === 'teacher')
+			const teacherRole = (await store.dispatch("roles/find", {
+				query: {
+					name: 'teacher'
+				}
+			})).data[0];
+
+			const studentsRole = (await store.dispatch("roles/find", {
+				query: {
+					name: 'student'
+				}
+			})).data[0];
+
 			const query = {
 				roles: [teacherRole._id]
 			};
-			await store.dispatch("users/find", {
-				query
-			})
+			const teachers = (await store.dispatch("users/find", { query })).data
+
+			const query2 = {
+				roles: [studentsRole._id]
+			};			
+			const students = (await store.dispatch("users/find", { query: query2 })).data
+
+			return {
+				teachers,
+				students
+			}
 		} catch (err) { 
 			console.log('err')
 			console.log(err)
@@ -51,10 +73,7 @@ export default {
 	computed: {
 		...mapState("auth", {
 			user: "user",
-		}),
-		...mapGetters("users", {
-			users: "list",
-		}),
+		})
 	},
 	created(ctx) {
 		this.course.teacherIds.push(this.user._id);
