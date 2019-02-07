@@ -144,13 +144,13 @@ import BaseInput from "./ui/BaseInput";
 import BaseButton from "./ui/BaseButton";
 import MultiSelect from "vue-multiselect";
 
-import flatPickr from "vue-flatpickr-component";
+import FlatPickr from "vue-flatpickr-component";
 import "flatpickr/dist/flatpickr.css";
 import { German } from "flatpickr/dist/l10n/de.js";
 
 export default {
 	name: "TemplateCourseWizard",
-	components: { StepProgress, MultiSelect, flatPickr },
+	components: { StepProgress, MultiSelect, FlatPickr },
 	props: {
 		currentStep: {
 			type: Number,
