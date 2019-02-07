@@ -5,10 +5,12 @@
 			:current-step="0"
 			:course="course"
 			:user="user"
+			:teachers="teachers"
+			:classes="classes"
 			@course-creation-submit="create()"
 		/>
-		{{ user._id }}
-		{{ users }}
+		Klassen
+		{{ classes }}
 	</div>
 </template>
 
@@ -19,20 +21,19 @@ import TemplateCourseWizard from "@components/TemplateCourseWizard";
 
 export default {
 	components: { TemplateCourseWizard },
-	async asyncData ({ store })  {
+	async asyncData({ store }) {
 		try {
 			const roles = await store.dispatch("roles/find");
-			const teacherRole = roles.data.find(r => r.name === 'teacher')
+			const teacherRole = roles.data.find((r) => r.name === "teacher");
 			const query = {
-				roles: [teacherRole._id]
+				roles: [teacherRole._id],
 			};
 			await store.dispatch("users/find", {
-				query
-			})
-		} catch (err) { 
-			console.log('err')
-			console.log(err)
-		}
+				query,
+			});
+
+			await store.dispatch("classes/find");
+		} catch (err) {}
 	},
 	data() {
 		return {
@@ -44,7 +45,9 @@ export default {
 			course: {
 				name: "",
 				description: "",
-				teacherIds: [],
+				teachers: [],
+				substitutions: [],
+				classes: [],
 			},
 		};
 	},
@@ -53,11 +56,11 @@ export default {
 			user: "user",
 		}),
 		...mapGetters("users", {
-			users: "list",
+			teachers: "list",
 		}),
-	},
-	created(ctx) {
-		this.course.teacherIds.push(this.user._id);
+		...mapGetters("classes", {
+			classes: "list",
+		}),
 	},
 	methods: {
 		async create(id) {
@@ -66,7 +69,15 @@ export default {
 					schoolId: this.user.schoolId,
 					name: this.course.name,
 					description: this.course.description,
-					teacherIds: [this.user._id],
+					teacherIds: this.course.teachers.map((teacher) => {
+						return teacher["_id"];
+					}),
+					substitutionIds: this.course.substitutions.map((substitution) => {
+						return substitution["_id"];
+					}),
+					classIds: this.course.classes.map((c) => {
+						return c["_id"];
+					}),
 				});
 
 				this.$router.push({ name: "courses" });
