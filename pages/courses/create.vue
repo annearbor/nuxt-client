@@ -7,6 +7,7 @@
 			:user="user"
 			:teachers="teachers"
 			:classes="classes"
+			:students="students"
 			@course-creation-submit="create()"
 		/>
 		{{ user._id }}
@@ -72,10 +73,12 @@ export default {
 			course: {
 				name: "",
 				description: "",
+				startDate: "",
+				endDate: "",
 				teachers: [],
-				teacherIds: [],
 				substitutions: [],
 				classes: [],
+				students: [],
 			},
 		};
 	},
@@ -86,9 +89,6 @@ export default {
 		...mapGetters("classes", {
 			classes: "list",
 		}),
-	},
-	created(ctx) {
-		this.course.teacherIds.push(this.user._id);
 	},
 	methods: {
 		async create(id) {
@@ -105,6 +105,9 @@ export default {
 					}),
 					classIds: this.course.classes.map((c) => {
 						return c["_id"];
+					}),
+					userIds: this.course.students.map((student) => {
+						return student["_id"];
 					}),
 				});
 

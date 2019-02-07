@@ -46,6 +46,24 @@
 					track-by="_id"
 				></MultiSelect>
 
+				<BaseInput
+					v-model="course.startDate"
+					name="startDate"
+					label="Startdatum"
+					type="text"
+					placeholder="2018-09-01 00:00:00.000"
+					maxlength="30"
+				></BaseInput>
+
+				<BaseInput
+					v-model="course.endDate"
+					name="endDate"
+					label="Enddatum"
+					type="text"
+					placeholder="2019-08-31 00:00:00.000"
+					maxlength="30"
+				></BaseInput>
+
 				selected teachers:
 				{{
 					course.teachers.map((item) => {
@@ -72,8 +90,23 @@
 					track-by="_id"
 				></MultiSelect>
 
+				<h6>Studenten auswählen</h6>
+				<MultiSelect
+					v-model="course.students"
+					:options="students"
+					:multiple="true"
+					label="displayName"
+					track-by="_id"
+				></MultiSelect>
+
 				{{
 					course.classes.map((c) => {
+						return c["_id"];
+					})
+				}}
+
+				{{
+					course.students.map((c) => {
 						return c["_id"];
 					})
 				}}
@@ -150,6 +183,10 @@ export default {
 			default: () => [],
 		},
 		classes: {
+			type: Array,
+			default: () => [],
+		},
+		students: {
 			type: Array,
 			default: () => [],
 		},
