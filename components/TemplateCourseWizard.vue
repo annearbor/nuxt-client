@@ -46,15 +46,6 @@
 					track-by="_id"
 				></MultiSelect>
 
-				<h6>Klasse auswählen</h6>
-				<MultiSelect
-					v-model="course.classes"
-					:options="classes"
-					:multiple="true"
-					label="displayName"
-					track-by="_id"
-				></MultiSelect>
-
 				selected teachers:
 				{{
 					course.teachers.map((item) => {
@@ -71,6 +62,21 @@
 
 			<div v-show="currentStep == 1">
 				<h3>Step 2</h3>
+
+				<h6>Klasse auswählen</h6>
+				<MultiSelect
+					v-model="course.classes"
+					:options="classes"
+					:multiple="true"
+					label="displayName"
+					track-by="_id"
+				></MultiSelect>
+
+				{{
+					course.classes.map((c) => {
+						return c["_id"];
+					})
+				}}
 			</div>
 
 			<div v-show="currentStep == 2">

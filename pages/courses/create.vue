@@ -9,8 +9,6 @@
 			:classes="classes"
 			@course-creation-submit="create()"
 		/>
-		Klassen
-		{{ classes }}
 	</div>
 </template>
 
