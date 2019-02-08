@@ -28,13 +28,6 @@ export default {
 		CalanderIcon,
 	},
 	props: {
-<<<<<<< HEAD
-		msg: {
-			type: String,
-			default: ''
-		},
-=======
->>>>>>> cw/storybook-integration
 		course: {
 			type: Object,
 			default: () => ({
