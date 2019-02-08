@@ -1,21 +1,27 @@
 <template>
 	<div class="footer">
-		<div v-if="course.courseAlert == ''" class="footer-next-course">
-			<FontAwesomeIcon :icon="['far', 'clock']" size="lg" />
-			{{ course.nextCourseTime }}
+		<div v-if="course.alert == ''" class="footer-next-course">
+			<div class="align-center">
+				<ClockIcon />
+			</div>
+			<div class="align-center">
+				{{ course.nextCourseTime }}
+			</div>
 		</div>
 		<div v-else class="footer-alert">
 			<PulsatingDot></PulsatingDot>
-			<div class="alert-label"> {{ course.courseAlert }}</div>
+			<div class="alert-label"> {{ course.alert }}</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import PulsatingDot from "./PulsatingDot.vue";
+import ClockIcon from "../assets/clock.svg";
+
 export default {
 	name: "CardFooter",
-	components: { PulsatingDot },
+	components: { PulsatingDot, ClockIcon },
 	props: {
 		course: {
 			type: Object,
@@ -26,7 +32,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .footer {
 	height: 24px;
@@ -36,11 +41,20 @@ export default {
 }
 
 .footer-next-course {
-	font-family: PT Sans Narrow, -apple-system, BlinkMacSystemFont, "Segoe UI",
-		Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	display: flex;
+	flex-direction: row;
+	font-family: PT Sans Narrow, sans-serif;
 	font-size: 16px;
 	color: #494949;
 	text-align: left;
+
+	/* TODO align text to center */
+}
+
+.align-center{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .footer-alert {
@@ -50,8 +64,7 @@ export default {
 
 .alert-label {
 	flex: 1;
-	font-family: PT Sans Narrow, -apple-system, BlinkMacSystemFont, "Segoe UI",
-		Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+	font-family: PT Sans Narrow, sans-serif;
 	font-weight: bold;
 	color: #d00;
 }
