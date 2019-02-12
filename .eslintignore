@@ -1,2 +1,11 @@
+<<<<<<< HEAD
 /dist/
 /schulcloud-client/
+=======
+.vscode
+/node_modules/**
+/schulcloud-client/
+dist
+coverage
+storybook-static
+>>>>>>> master
