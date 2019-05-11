@@ -2,7 +2,7 @@ import Vue from "vue";
 //import Vuex from "vuex";
 import fs from "fs";
 import path from "path";
-//import axios from "axios";
+import commonTest from "./commonTests.js";
 
 // ===
 // Utility functions
@@ -10,14 +10,6 @@ import path from "path";
 
 // https://vue-test-utils.vuejs.org/
 import vueTestUtils from "@vue/test-utils";
-// https://lodash.com/
-import _ from "lodash";
-_.mixin({
-	pascalCase: _.flow(
-		_.camelCase,
-		_.upperFirst
-	),
-});
 
 // ===
 // Configure Vue
@@ -32,17 +24,36 @@ Vue.config.productionTip = false;
 // Register global components
 // ===
 
-const globalComponentFiles = fs
-	.readdirSync(path.join(__dirname, "../../components/ui"))
-	.filter((fileName) => /^Base[A-Z][\w]+\.vue$/.test(fileName));
+import "@plugins/global";
+import { mountBaseComponents } from "@basecomponents/_globals";
 
-for (const fileName of globalComponentFiles) {
-	const componentName = _.pascalCase(
-		fileName.match(/^(Base[A-Z][\w]+)\.vue$/)[1]
-	);
-	const componentConfig = require("../../components/ui/" + fileName);
-	Vue.component(componentName, componentConfig.default || componentConfig);
+const baseComponentDir = path.join(__dirname, "../../src/components/ui/");
+
+function readDirRecursiveSync(dir) {
+	let results = [];
+	const list = fs.readdirSync(dir);
+	list.forEach((file) => {
+		file = path.join(dir, file);
+		const stat = fs.statSync(file);
+		if (stat && stat.isDirectory()) {
+			/* Recurse into a subdirectory */
+			results.push(...readDirRecursiveSync(file));
+		} else {
+			/* Is a file */
+			results.push(file);
+		}
+	});
+	return results;
 }
+
+const globalComponentFiles = readDirRecursiveSync(baseComponentDir)
+	// Only include "Base" prefixed .vue files
+	.filter((fileName) => /Base[A-Z][\w]+\.vue$/.test(fileName))
+	.map((fileName) => "./" + path.relative(baseComponentDir, fileName));
+
+mountBaseComponents(globalComponentFiles, (fileName) =>
+	require(path.join(baseComponentDir, fileName))
+);
 
 // ===
 // Mock window properties not handled by jsdom
@@ -145,8 +156,8 @@ global.createComponentMocks = ({ store, router, style, mocks, stubs }) => {
 	// If using `router: true`, we'll automatically stub out
 	// components from Vue Router.
 	if (router) {
-		returnOptions.stubs["nuxt-link"] = true;
-		returnOptions.stubs["nuxt"] = true;
+		returnOptions.stubs["NuxtLink"] = true;
+		returnOptions.stubs["Nuxt"] = true;
 	}
 	/*
 	// If a `style` object is provided, mock some styles.
@@ -180,3 +191,10 @@ global.createModuleStore = (vuexModule, options = {}) => {
 	return store;
 };
 */
+
+// ===
+// Common tests
+// ===
+for (name in commonTest) {
+	global[name] = commonTest[name];
+}

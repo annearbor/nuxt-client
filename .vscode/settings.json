@@ -5,7 +5,6 @@
 
 	"editor.detectIndentation": false,
 	"editor.insertSpaces": false,
-	"editor.indentationMode": "tab",
 	"editor.trimAutoWhitespace": true,
 	"files.trimTrailingWhitespace": true,
 	"files.eol": "\n",
@@ -22,10 +21,9 @@
 	"files.exclude": {
 		"**/*.log": true,
 		"**/*.log*": true,
-		"**/dist": true
-	},
-	"files.associations": {
-		".markdownlintrc": "jsonc"
+		"node_modules": true,
+		"jsconfig.json": true,
+		"**/coverage": true
 	},
 
 	// ===
@@ -59,6 +57,7 @@
 	],
 	"vetur.completion.useScaffoldSnippets": false,
 	"prettier.disableLanguages": [],
+	"trailing-spaces.trimOnSave": true,
 
 	// ===
 	// HTML
@@ -71,6 +70,7 @@
 		"vue-html": "html"
 	},
 	"vetur.format.defaultFormatter.html": "none",
+
 	// ===
 	// JS(ON)
 	// ===
@@ -98,10 +98,10 @@
 	// MARKDOWN
 	// ===
 
+	"markdownlint.ignore": ["schulcloud-client/**/*.md"],
 	"[markdown]": {
 		"editor.wordWrap": "wordWrapColumn",
-		"editor.wordWrapColumn": 80,
-		"markdownlint.ignore": ["schulcloud-client/**/*.md"]
+		"editor.wordWrapColumn": 80
 	},
 
 	// ===

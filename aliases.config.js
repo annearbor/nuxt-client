@@ -1,20 +1,26 @@
 const path = require("path");
 const fs = require("fs");
 const prettier = require("prettier");
+const themeName = process.env.SC_THEME || "default";
 
 const aliases = {
 	"~": ".",
-	"@": ".",
-	"@assets": "assets",
-	"@components": "components",
-	"@layouts": "layouts",
-	"@middleware": "middleware",
-	"@pages": "pages",
-	"@plugins": "plugins",
-	"@static": "static",
-	"@store": "store",
-	"@variables": "styles/variables.scss",
-	"@styles": "styles/base.scss",
+	"@": "src",
+	"@assets": "src/assets",
+	"@components": "src/components",
+	"@basecomponents": "src/components/ui",
+	"@docs": "docs",
+	"@layouts": "src/layouts",
+	"@middleware": "src/middleware",
+	"@mixins": "src/mixins",
+	"@pages": "src/pages",
+	"@plugins": "src/plugins",
+	"@store": "src/store",
+	"@static": `src/themes/${themeName}/static`,
+	"@theme": `src/themes/${themeName}`,
+	"@styles": `src/themes/${themeName}/styles`,
+	"@styles-default": `src/themes/default/styles`,
+	"@variables": `src/themes/${themeName}/styles/variables.scss`,
 };
 
 module.exports = {

@@ -1,3 +1,5 @@
-/dist/
-/schulcloud-client/
-coverage
+.vscode
+/node_modules/**
+/src/legacy-client/**
+dist
+.nuxt

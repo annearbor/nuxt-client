@@ -1,0 +1,6 @@
+.github
+.nuxt
+.vscode
+deploy
+node_modules
+.travis.yml*

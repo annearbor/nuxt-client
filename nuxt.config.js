@@ -1,8 +1,13 @@
 const pkg = require("./package");
+const themeName = process.env.SC_THEME || "default";
 
 module.exports = {
 	mode: "spa",
-
+	srcDir: "src/",
+	theme: "default",
+	env: {
+		API_URL: process.env.API_URL || "http://localhost:3030",
+	},
 	/*
 	 ** Headers of the page
 	 */
@@ -25,12 +30,8 @@ module.exports = {
 		link: [
 			{
 				rel: "icon",
-				type: "image/x-icon",
-				href: "/favicon.ico",
-			},
-			{
-				rel: "stylesheet",
-				href: "https://use.fontawesome.com/releases/v5.6.3/css/all.css",
+				type: "image/png",
+				href: "/images/logo/favicon-32.png",
 			},
 		],
 	},
@@ -42,11 +43,12 @@ module.exports = {
 		color: "#fff",
 	},
 
+	css: ["@/themes/" + themeName + "/styles"],
+
 	/*
 	 ** Global CSS
 	 */
 	cssSourceMap: true,
-	css: ["~/styles/base.scss"],
 
 	router: {
 		middleware: ["is-authenticated"],
@@ -57,12 +59,10 @@ module.exports = {
 	 */
 	plugins: [
 		{
-			src: "~/plugins/authenticate",
+			src: "@plugins/authenticate",
 			ssr: false,
 		},
-		"@plugins/global.js",
-		"@plugins/directives.js",
-		// '~/plugins/feathers',
+		"@plugins/global",
 	],
 
 	/*
@@ -73,13 +73,19 @@ module.exports = {
 
 		// Doc: https://github.com/nuxt-community/axios-module#usage
 		"@nuxtjs/axios",
+		"@nuxtjs/toast",
 		"nuxt-babel",
 	],
+
+	toast: {
+		duration: 3000,
+	},
 	/*
 	 ** Axios module configuration
 	 */
 	axios: {
 		// See https://github.com/nuxt-community/axios-module#options
+		baseUrl: process.env.BASE_URL || "https://localhost:3030",
 	},
 
 	/*
@@ -91,6 +97,20 @@ module.exports = {
 		 */
 		extend(config, ctx) {
 			config.resolve.alias = require("./aliases.config").webpack;
+			/*
+			// this is breaking normal svg image loading
+			// https://www.npmjs.com/package/vue-svg-loader
+			const svgRule = config.module.rules.find((rule) =>
+				rule.test.test(".svg")
+			);
+
+			svgRule.test = /\.(png|jpe?g|gif|webp)$/;
+
+			config.module.rules.push({
+				test: /\.svg$/,
+				loader: "vue-svg-loader",
+			});
+			*/
 			// Run ESLint on save
 			if (ctx.isDev && ctx.isClient) {
 				config.module.rules.push({
@@ -104,5 +124,14 @@ module.exports = {
 				});
 			}
 		},
+		postcss: {
+			plugins: {},
+			preset: {
+				autoprefixer: {},
+			},
+		},
+	},
+	generate: {
+		dir: "dist/nuxt",
 	},
 };

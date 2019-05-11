@@ -1,4 +1,7 @@
 /node_modules/**
-/schulcloud-client/**
-/dist/**
-coverage
+/src/legacy-client/**
+dist
+.nuxt
+docs/storybook/**/*.md
+LICENSE.md
+.browserslistrc

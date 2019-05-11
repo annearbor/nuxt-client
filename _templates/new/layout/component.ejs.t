@@ -1,9 +1,9 @@
 ---
-to: "layouts/<%= name %>.vue"
+to: "src/layouts/<%= name %>.vue"
 ---
 <template>
   <div class="container">
-    <slot />
+    <Nuxt />
   </div>
 </template>
 
