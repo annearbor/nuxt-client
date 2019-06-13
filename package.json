@@ -93,7 +93,7 @@
 		"imagemin-lint-staged": "^0.4.0",
 		"jest": "^24.1.0",
 		"jest-haste-map": "^24.8.1",
-		"jest-resolve": "^24.5.0",
+		"jest-resolve": "^24.8.0",
 		"jest-serializer-vue": "^2.0.2",
 		"lint-staged": "^8.1.1",
 		"markdownlint-cli": "github:igorshubovych/markdownlint-cli",
